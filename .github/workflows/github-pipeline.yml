@@ -1,29 +1,49 @@
-name: GitHub Actions CI/CD Pipeline
+name: Green CI/CD Pipeline with Energy Measurement
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  ci-cd-pipeline:
+  measure-energy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code from Repository
         uses: actions/checkout@v4
+
+      # 1. INITIALIZE THE ENERGY PROFILER
+      - name: Start Eco-CI Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: start-measurement
 
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install Dependencies (CI)
+      - name: Install Dependencies
         run: npm ci
+
+      # 2. MEASURE DEPENDENCY INSTALLATION STEP
+      - name: Measure Dependency Step
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: get-measurement
+          label: "Dependency Install"
 
       - name: Run Automated Tests (CI Stage)
         run: npm test
 
-      - name: Deploy Application (CD Stage)
-        run: |
-          echo "Build and tests successfully verified."
-          echo "Deploying application to production environment..."
+      # 3. MEASURE TESTING STEP
+      - name: Measure Test Step
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: get-measurement
+          label: "Automated Testing"
+
+      # 4. DISPLAY TOTAL PIPELINE ENERGY SUMMARY
+      - name: Show Total Energy Summary
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: display-results
