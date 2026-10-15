@@ -1,4 +1,4 @@
-name: Green CI/CD Pipeline with Energy Measurement
+name: Green CI/CD Pipeline with Energy and CO2 Measurement
 
 on:
   push:
@@ -11,11 +11,13 @@ jobs:
       - name: Checkout Code from Repository
         uses: actions/checkout@v4
 
-      # 1. INITIALIZE THE ENERGY PROFILER
+      # 1. INITIALIZE WITH CO2 CALCULATION ENABLED
       - name: Start Eco-CI Measurement
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: start-measurement
+          co2-calculation-method: 'constant'   # Can be 'constant' or 'location-based'
+          co2-grid-intensity-constant: 350     # Average grid intensity in gCO2eq/kWh (e.g., 350 for fossil-mix grid)
 
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
@@ -25,7 +27,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      # 2. MEASURE DEPENDENCY INSTALLATION STEP
       - name: Measure Dependency Step
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
@@ -35,15 +36,14 @@ jobs:
       - name: Run Automated Tests (CI Stage)
         run: npm test
 
-      # 3. MEASURE TESTING STEP
       - name: Measure Test Step
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
           label: "Automated Testing"
 
-      # 4. DISPLAY TOTAL PIPELINE ENERGY SUMMARY
-      - name: Show Total Energy Summary
+      # 2. DISPLAY TOTAL SUMMARY INCLUDING CO2
+      - name: Show Total Energy and CO2 Summary
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
