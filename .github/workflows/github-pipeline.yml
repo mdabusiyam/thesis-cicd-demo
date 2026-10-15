@@ -11,13 +11,11 @@ jobs:
       - name: Checkout Code from Repository
         uses: actions/checkout@v4
 
-      # 1. INITIALIZE WITH CO2 CALCULATION ENABLED
+      # 1. INITIALIZE MEASUREMENT
       - name: Start Eco-CI Measurement
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: start-measurement
-          co2-calculation-method: 'constant'   # Can be 'constant' or 'location-based'
-          co2-grid-intensity-constant: 350     # Average grid intensity in gCO2eq/kWh (e.g., 350 for fossil-mix grid)
 
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
@@ -42,8 +40,10 @@ jobs:
           task: get-measurement
           label: "Automated Testing"
 
-      # 2. DISPLAY TOTAL SUMMARY INCLUDING CO2
+      # 2. DISPLAY SUMMARY WITH FORCED CONSTANT CO2 CALCULATION
       - name: Show Total Energy and CO2 Summary
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
+          co2-calculation-method: 'constant'
+          co2-grid-intensity-constant: 472
