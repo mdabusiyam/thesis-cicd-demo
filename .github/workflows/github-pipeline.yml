@@ -1,4 +1,4 @@
-name: Green CI/CD Pipeline with Energy and CO2 Measurement
+name: Green CI/CD Pipeline with Energy Measurement
 
 on:
   push:
@@ -39,8 +39,8 @@ jobs:
           task: get-measurement
           label: "Automated Testing"
 
-      - name: Show Total Energy and CO2 Summary
+      - name: Show Total Energy Summary
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
-          calculate-co2: true
+          send-data: false
