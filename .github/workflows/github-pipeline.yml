@@ -11,7 +11,6 @@ jobs:
       - name: Checkout Code from Repository
         uses: actions/checkout@v4
 
-      # 1. INITIALIZE MEASUREMENT
       - name: Start Eco-CI Measurement
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
@@ -40,10 +39,8 @@ jobs:
           task: get-measurement
           label: "Automated Testing"
 
-      # 2. DISPLAY SUMMARY WITH FORCED CONSTANT CO2 CALCULATION
       - name: Show Total Energy and CO2 Summary
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
-          co2-calculation-method: 'constant'
-          co2-grid-intensity-constant: 472
+          calculate-co2: true
